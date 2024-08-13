@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MapComponent from '../components/MapComponent';
 
 function Location() {
-  const [location, setLocation] = useState({ lat: null, lon: null });
+  const [location, setLocation] = useState({ lat: null, lon: null, accuracy: null });
   const [error, setError] = useState(null);
 
   const getLocation = () => {
@@ -13,9 +13,11 @@ function Location() {
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          console.log(position)
           setLocation({
             lat: position.coords.latitude,
             lon: position.coords.longitude,
+            accuracy: position.coords.accuracy
           });
           setError(null);
         },
@@ -35,7 +37,8 @@ function Location() {
         <div>
           <p>Latitude: {location.lat}</p>
           <p>Longitude: {location.lon}</p>
-          <MapComponent lat={location.lat} lon={location.lon} />
+          <p>Accuracy: {location.accuracy}</p>
+          <MapComponent lat={location.lat} lon={location.lon} accuracy={location.accuracy} />
         </div>
       )}
       {error && <p>Erreur: {error}</p>}
